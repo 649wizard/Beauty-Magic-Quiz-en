@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Strategy Session | Or &amp; Naor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   RESET & ROOT
+   ============================================================ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:        #080810;
+  --bg1:       #0c0c18;
+  --bg2:       #101020;
+  --bg3:       #141428;
+  --pink:      #e91e8c;
+  --pink-d:    #c2185b;
+  --pink-glow: rgba(233,30,140,0.15);
+  --gold:      #c9a84c;
+  --gold-d:    #a8893a;
+  --gold-glow: rgba(201,168,76,0.18);
+  --cream:     #f2ead8;
+  --green:     #4caf50;
+  --red:       #f06060;
+  --t1:        #f2ead8;
+  --t2:        #c8c0b0;
+  --t3:        #a09890;
+  --t4:        #786f66;
+  --t5:        #504840;
+  --b1:        rgba(242,234,216,0.06);
+  --b2:        rgba(242,234,216,0.10);
+  --b-pink:    rgba(233,30,140,0.22);
+  --b-gold:    rgba(201,168,76,0.22);
+  --r:         16px;
+  --r-lg:      22px;
+  font-size: 18px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--t2);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  line-height: 1.85;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9997;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px;
+}
+
+/* Ambient glow blobs */
+.bg-glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.bg-glow .g1 {
+  position: absolute; border-radius: 50%;
+  width: 700px; height: 700px; top: -15%; left: -20%;
+  background: radial-gradient(circle, rgba(233,30,140,0.14), transparent 65%);
+  filter: blur(80px); animation: g1drift 22s ease-in-out infinite alternate;
+}
+.bg-glow .g2 {
+  position: absolute; border-radius: 50%;
+  width: 550px; height: 550px; bottom: 5%; right: -15%;
+  background: radial-gradient(circle, rgba(201,168,76,0.12), transparent 65%);
+  filter: blur(80px); animation: g2drift 28s ease-in-out infinite alternate;
+}
+@keyframes g1drift { to { transform: translate(120px, 100px); } }
+@keyframes g2drift { to { transform: translate(-100px, -80px); } }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.2;
+}
+h1 { font-size: clamp(2.6rem, 7vw, 5rem); }
+h2 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 600; }
+h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--t1); line-height: 1.4; }
+p  { color: var(--t3); line-height: 1.9; font-size: 1.05rem; }
+strong { color: var(--t1); font-weight: 700; }
+a  { color: inherit; }
+
+.txt-pink  { color: var(--pink) !important; }
+.txt-gold  { color: var(--gold) !important; }
+.txt-green { color: var(--green) !important; }
+.txt-cream { color: var(--cream) !important; }
+.gold-name { color: var(--gold) !important; font-weight: 700; }
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+.wrap    { max-width: 720px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+.wrap-sm { max-width: 580px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+.tc      { text-align: center; }
+
+.divider {
+  width: 40px; height: 2px; margin: 14px auto;
+  background: linear-gradient(90deg, var(--pink), var(--gold));
+  border-radius: 1px;
+}
+
+.sec-label {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase; letter-spacing: .14em;
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   SCROLL FADE ANIMATIONS
+   ============================================================ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up:nth-child(2) { transition-delay: 0.1s; }
+.fade-up:nth-child(3) { transition-delay: 0.2s; }
+.fade-up:nth-child(4) { transition-delay: 0.3s; }
+.fade-up:nth-child(5) { transition-delay: 0.4s; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  color: #000 !important; text-decoration: none !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem; font-weight: 800;
+  padding: 18px 48px; border-radius: 50px; border: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(201,168,76,0.4);
+  transition: transform .25s, box-shadow .25s;
+  position: relative; z-index: 1;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(201,168,76,0.55); }
+.btn-lg { font-size: 1.15rem; padding: 22px 56px; }
+.btn-sub { display: block; font-size: .78rem; color: var(--t4); margin-top: 10px; text-align: center; font-family: 'Outfit', sans-serif; }
+
+.sec-cta { margin-top: 36px; text-align: center; padding-top: 28px; border-top: 1px solid var(--b1); }
+.sec-cta-btn {
+  display: inline-block;
+  background: rgba(201,168,76,.08); border: 1px solid var(--b-gold);
+  color: var(--gold) !important; font-family: 'Outfit', sans-serif;
+  font-size: .9rem; font-weight: 700;
+  padding: 13px 32px; border-radius: 50px;
+  text-decoration: none !important; cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+}
+.sec-cta-btn:hover { background: rgba(201,168,76,.16); box-shadow: 0 4px 20px rgba(201,168,76,.3); }
+
+/* ============================================================
+   CONFIRM BAR
+   ============================================================ */
+.confirm-bar {
+  background: linear-gradient(90deg, rgba(201,168,76,.08), rgba(233,30,140,.05));
+  border-bottom: 1px solid var(--b-gold);
+  padding: 28px 28px 24px;
+  text-align: center;
+  position: relative; z-index: 1;
+}
+.confirm-bar .cb-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem,4vw,2.2rem); font-weight: 700;
+  line-height: 1.25; margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--gold), #ffe066);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.confirm-bar .cb-sub {
+  color: var(--green); font-size: .9rem; font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ============================================================
+   EYEBROW PILL
+   ============================================================ */
+.eyebrow-wrap {
+  text-align: center; padding: 20px 28px 0;
+  position: relative; z-index: 1;
+}
+.eyebrow-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.25);
+  border-radius: 50px; padding: 8px 18px 8px 10px;
+}
+.eyebrow-pill img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.eyebrow-pill span { font-size: .82rem; font-weight: 700; color: var(--gold); font-family: 'Outfit', sans-serif; }
+
+/* ============================================================
+   TOC
+   ============================================================ */
+.toc-sec {
+  background: rgba(201,168,76,.04);
+  border-top: 1px solid var(--b-gold); border-bottom: 1px solid var(--b-gold);
+  padding: 24px 0; position: relative; z-index: 1;
+}
+.toc-label { font-size: .7rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: .12em; text-align: center; margin-bottom: 14px; font-family: 'Outfit', sans-serif; }
+.toc-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.toc-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--b1);
+  color: var(--t2) !important; font-size: .76rem; font-weight: 600;
+  padding: 7px 14px; border-radius: 50px;
+  text-decoration: none !important; cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: background .2s, border-color .2s, color .2s; white-space: nowrap;
+}
+.toc-btn:hover { background: rgba(201,168,76,.1); border-color: var(--b-gold); color: var(--gold) !important; }
+.toc-btn.cta-jump {
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  color: #000 !important; border-color: transparent;
+  box-shadow: 0 4px 16px rgba(201,168,76,.35);
+}
+.toc-btn.cta-jump:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,.5); color: #000 !important; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% -10%, rgba(201,168,76,.12) 0%, transparent 60%),
+    var(--bg);
+  padding: 72px 28px 64px;
+  text-align: center;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: rgba(201,168,76,.1); color: var(--gold);
+  font-size: .78rem; font-weight: 700; font-family: 'Outfit', sans-serif;
+  padding: 7px 18px 7px 10px; border-radius: 50px;
+  border: 1px solid var(--b-gold); margin-bottom: 28px;
+}
+.hero-eyebrow img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+.hero .mistake-box {
+  max-width: 620px; margin: 0 auto 36px; text-align: left;
+}
+.hero .mistake-label {
+  font-size: .7rem; font-weight: 700; color: var(--pink);
+  text-transform: uppercase; letter-spacing: .12em; margin-bottom: 14px;
+  display: block; font-family: 'Outfit', sans-serif;
+}
+.hero .mistake-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem); font-weight: 600;
+  color: var(--t1); line-height: 1.3; margin-bottom: 20px;
+}
+.hero-sub { font-size: 1.05rem; color: var(--t3); line-height: 1.95; margin-bottom: 16px; }
+.hero-highlight {
+  background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.25);
+  border-radius: var(--r); padding: 20px 22px; margin-bottom: 16px;
+}
+.hero-highlight p { color: var(--t2); font-size: .93rem; line-height: 1.9; margin: 0; }
+.hero-micro {
+  margin-top: 14px; font-size: .78rem; color: var(--t4);
+  display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+  font-family: 'Outfit', sans-serif;
+}
+.hero-micro span { display: flex; align-items: center; gap: 5px; }
+
+/* ============================================================
+   PHOTO SECTION
+   ============================================================ */
+.photo-sec {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.photo-wrap {
+  max-width: 680px; margin: 24px auto 0;
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: 0 16px 64px rgba(233,30,140,.14);
+  border: 1px solid var(--b-pink);
+}
+.photo-wrap img { width: 100%; display: block; }
+
+/* ============================================================
+   WHO WE ARE
+   ============================================================ */
+.who-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.who-grid { display: grid; grid-template-columns: 180px 1fr; gap: 36px; align-items: center; margin-top: 28px; }
+.who-photo {
+  width: 180px; height: 180px; border-radius: var(--r);
+  overflow: hidden; border: 2px solid var(--pink);
+  box-shadow: 0 8px 40px rgba(233,30,140,.2); flex-shrink: 0;
+}
+.who-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.who-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.who-stat {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r); padding: 14px 16px; text-align: center;
+}
+.who-stat .n { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+.who-stat .l { font-size: .76rem; color: var(--t4); margin-top: 4px; line-height: 1.4; font-family: 'Outfit', sans-serif; }
+
+/* ============================================================
+   PROOF BAR
+   ============================================================ */
+.proof-bar {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1); border-bottom: 1px solid var(--b1);
+  padding: 48px 0;
+  position: relative; z-index: 1;
+}
+.proof-bar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 22px; }
+
+/* ============================================================
+   BRIDGE
+   ============================================================ */
+.bridge-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.bridge-sec p { font-size: 1.05rem; color: var(--t2); margin-bottom: 14px; line-height: 1.95; }
+.bridge-highlight {
+  background: rgba(233,30,140,.05);
+  border-left: 2px solid var(--pink);
+  padding: 18px 22px; border-radius: 0 var(--r) var(--r) 0;
+  margin: 24px 0; color: var(--t2); font-size: .95rem; line-height: 1.85;
+}
+.bridge-urgency {
+  background: rgba(233,30,140,.06); border: 1px solid rgba(233,30,140,.22);
+  border-radius: var(--r); padding: 24px 22px; margin-top: 32px;
+}
+.bridge-urgency .u-label {
+  font-size: .7rem; font-weight: 700; color: var(--pink);
+  text-transform: uppercase; letter-spacing: .12em; margin-bottom: 10px;
+  display: block; font-family: 'Outfit', sans-serif;
+}
+
+/* ============================================================
+   DELIVERABLES
+   ============================================================ */
+.deliver-sec {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.deliver-sub { text-align: center; font-size: .88rem; color: var(--t4); margin-bottom: 32px; font-family: 'Outfit', sans-serif; }
+.deliver-list { display: flex; flex-direction: column; gap: 12px; }
+.deliver-item {
+  display: flex; align-items: flex-start; gap: 18px;
+  background: rgba(201,168,76,.04); border: 1px solid rgba(201,168,76,.18);
+  border-radius: var(--r); padding: 22px 24px;
+}
+.deliver-num {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: #000;
+}
+.deliver-text h3 { font-size: 1.05rem; color: var(--gold); margin-bottom: 4px; }
+.deliver-text p  { font-size: .95rem; color: var(--t4); margin: 0; line-height: 1.65; }
+
+/* ============================================================
+   AFTER MEETING
+   ============================================================ */
+.after-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.after-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.after-card { border-radius: var(--r); padding: 24px 22px; }
+.after-gold { background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.2); }
+.after-pink { background: rgba(233,30,140,.04); border: 1px solid rgba(233,30,140,.18); }
+.after-green { background: rgba(76,175,80,.04); border: 1px solid rgba(76,175,80,.18); }
+.after-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: 8px; }
+.after-gold h3 { color: var(--gold); }
+.after-pink h3 { color: var(--pink); }
+.after-green h3 { color: var(--green); }
+.after-card p { font-size: .98rem; color: var(--t2); margin: 0; line-height: 1.85; }
+
+/* ============================================================
+   METHOD
+   ============================================================ */
+.method-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.method-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 32px; }
+.method-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r); padding: 28px 22px; text-align: center;
+  position: relative;
+}
+.method-card::after {
+  content: ''; position: absolute; top: 50%; right: -8px;
+  width: 16px; height: 1px; background: var(--b-gold);
+}
+.method-card:last-child::after { display: none; }
+.method-step { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 10px; font-family: 'Outfit', sans-serif; }
+.method-icon { font-size: 1.8rem; margin-bottom: 10px; line-height: 1; }
+.method-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--t1); margin-bottom: 8px; }
+.method-desc { font-size: .82rem; color: var(--t4); line-height: 1.7; }
+
+/* ============================================================
+   VIDEO
+   ============================================================ */
+.video-sec {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.video-wrap {
+  max-width: 540px; margin: 24px auto 0;
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: 0 16px 64px rgba(233,30,140,.2);
+  border: 1px solid var(--b-pink);
+}
+.video-ratio { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+.video-ratio iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+/* ============================================================
+   SOCIAL PROOF
+   ============================================================ */
+.proof-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.proof-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r-lg); padding: 28px 24px; margin-bottom: 16px;
+  position: relative; overflow: hidden;
+}
+.proof-card::before {
+  content: '\201C'; position: absolute; top: 4px; left: 16px;
+  font-family: 'Cormorant Garamond', serif; font-size: 4rem; color: var(--gold);
+  opacity: .2; line-height: 1;
+}
+.proof-gold { border-color: rgba(201,168,76,.3); background: rgba(201,168,76,.04); }
+.proof-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.proof-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  overflow: hidden; border: 2px solid var(--pink); flex-shrink: 0;
+  background: rgba(233,30,140,.1);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+}
+.proof-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.proof-name { font-size: .88rem; font-weight: 700; color: var(--t1); font-family: 'Outfit', sans-serif; }
+.proof-title { font-size: .76rem; color: var(--t4); margin-top: 2px; }
+.proof-result {
+  display: inline-block; font-size: .72rem; font-weight: 700;
+  background: rgba(76,175,80,.1); color: var(--green);
+  border: 1px solid rgba(76,175,80,.22); padding: 3px 12px; border-radius: 50px; margin-top: 4px;
+}
+.proof-result.gold { background: rgba(201,168,76,.1); color: var(--gold); border-color: rgba(201,168,76,.25); }
+.proof-quote { font-size: 1rem; color: var(--t2); line-height: 1.85; }
+.proof-numbers { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.proof-num-item {
+  background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.2);
+  border-radius: 8px; padding: 8px 14px; font-size: .8rem; font-family: 'Outfit', sans-serif;
+}
+.proof-num-item strong { font-family: 'Cormorant Garamond', serif; color: var(--gold); display: block; font-size: 1.1rem; font-weight: 700; }
+
+/* ============================================================
+   SCREEN / SCREENSHOT ITEMS
+   ============================================================ */
+.screen-item {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--b1);
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+  transition: transform .2s; cursor: pointer;
+}
+.screen-item:hover { transform: scale(1.02); }
+.screen-item img { width: 100%; display: block; }
+.screen-caption {
+  padding: 10px 14px; font-size: .76rem; color: var(--t4);
+  background: rgba(255,255,255,.03); border-top: 1px solid var(--b1);
+  text-align: center; font-family: 'Outfit', sans-serif;
+}
+.screen-caption strong { color: var(--green); }
+
+/* ============================================================
+   SCREENSHOTS GALLERY
+   ============================================================ */
+.screens-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.screens-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.screens-intro { text-align: center; font-size: .86rem; color: var(--t4); margin-bottom: 32px; }
+
+/* LIGHTBOX */
+.wst-lb {
+  display: none; position: fixed; inset: 0; z-index: 99999;
+  background: rgba(0,0,0,.92); align-items: center; justify-content: center; padding: 20px;
+}
+.wst-lb.open { display: flex; }
+.wst-lb img { max-width: 90vw; max-height: 88vh; border-radius: 10px; }
+.wst-lb-close {
+  position: fixed; top: 18px; right: 20px;
+  color: #fff; font-size: 2rem; cursor: pointer; line-height: 1;
+  background: rgba(255,255,255,.1); border-radius: 50%;
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   INCLUDES
+   ============================================================ */
+.includes-sec {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.inc-list { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+.inc-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r); padding: 20px 22px;
+}
+.inc-item.bonus { background: rgba(201,168,76,.05); border-color: rgba(201,168,76,.3); }
+.inc-icon {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--pink-d));
+  display: flex; align-items: center; justify-content: center; font-size: .9rem;
+}
+.inc-item.bonus .inc-icon { background: linear-gradient(135deg, var(--gold), var(--gold-d)); }
+.inc-text h3 { font-size: .93rem; margin-bottom: 3px; }
+.inc-item.bonus .inc-text h3 { color: var(--gold); }
+.inc-text p  { font-size: .82rem; color: var(--t4); margin: 0; line-height: 1.6; }
+.bonus-mechanism {
+  background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.18);
+  border-radius: var(--r); padding: 20px 22px; margin-top: 22px;
+  font-size: .87rem; color: var(--t3); line-height: 1.85;
+}
+.bonus-mechanism strong { color: var(--gold); }
+
+/* ============================================================
+   FIT / NOT FIT
+   ============================================================ */
+.fit-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+.fit-card { border-radius: var(--r); padding: 24px 20px; }
+.fit-yes { background: rgba(76,175,80,.05); border: 1px solid rgba(76,175,80,.2); }
+.fit-no  { background: rgba(240,96,96,.04); border: 1px solid rgba(240,96,96,.15); }
+.fit-head { font-size: .84rem; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--b1); font-family: 'Outfit', sans-serif; }
+.fit-yes .fit-head { color: var(--green); }
+.fit-no  .fit-head { color: var(--red); }
+.fit-item { font-size: .84rem; color: var(--t3); padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+.fit-item::before { flex-shrink: 0; font-weight: 800; margin-top: 2px; }
+.fit-yes .fit-item::before { content: '✓'; color: var(--green); }
+.fit-no  .fit-item::before { content: '✗'; color: var(--red); }
+
+/* ============================================================
+   WHY NOW
+   ============================================================ */
+.whynow-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.whynow-list { display: flex; flex-direction: column; gap: 14px; }
+.whynow-item {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r); padding: 20px 22px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.whynow-item.green { background: rgba(76,175,80,.04); border-color: rgba(76,175,80,.22); }
+.whynow-num {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: #000;
+}
+.whynow-num.g { background: linear-gradient(135deg, var(--green), #388e3c); font-family: 'Outfit', sans-serif; font-size: 1rem; color: #fff; }
+.whynow-item h3 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
+.whynow-item.green h3 { color: var(--green); }
+.whynow-item p { font-size: .84rem; color: var(--t3); margin: 0; line-height: 1.7; }
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+.countdown-wrap {
+  background: rgba(240,96,96,.06); border: 1px solid rgba(240,96,96,.22);
+  border-radius: var(--r); padding: 18px 22px; text-align: center;
+  margin: 20px auto; max-width: 480px;
+}
+.countdown-label {
+  font-size: .74rem; font-weight: 700; color: var(--red);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px;
+  font-family: 'Outfit', sans-serif;
+}
+.countdown-boxes { display: flex; justify-content: center; gap: 10px; direction: ltr; }
+.countdown-box {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px; padding: 10px 14px; min-width: 60px; text-align: center;
+}
+.countdown-box .cd-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700;
+  color: var(--t1); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.countdown-box .cd-lbl { font-size: .62rem; color: var(--t5); margin-top: 4px; text-transform: uppercase; font-family: 'Outfit', sans-serif; }
+.countdown-after { font-size: .8rem; color: var(--t4); margin-top: 10px; font-family: 'Outfit', sans-serif; }
+.countdown-after strong { color: var(--red); }
+
+/* ============================================================
+   PRICE
+   ============================================================ */
+.price-sec {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,.08) 0%, transparent 65%),
+    var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 64px 0;
+  position: relative; z-index: 1;
+}
+.price-box {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b-gold);
+  border-radius: var(--r-lg); padding: 44px 40px; text-align: center;
+  position: relative; overflow: hidden; max-width: 520px; margin: 28px auto 0;
+}
+.price-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--pink), var(--gold));
+}
+.price-label { font-size: .74rem; color: var(--red); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; font-family: 'Outfit', sans-serif; font-weight: 700; }
+.price-was { font-size: .95rem; color: var(--t5); text-decoration: line-through; margin-bottom: 4px; }
+.price-main {
+  font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--gold), #ffe066);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1.1; margin-bottom: 6px;
+}
+.price-note { font-size: .82rem; color: var(--t4); margin-bottom: 28px; font-family: 'Outfit', sans-serif; }
+.price-includes {
+  display: flex; flex-direction: column; gap: 9px; text-align: left; margin-bottom: 28px;
+  background: rgba(255,255,255,.02); border: 1px solid var(--b1);
+  border-radius: var(--r); padding: 18px 20px;
+}
+.pi-row { display: flex; align-items: flex-start; gap: 10px; font-size: .95rem; color: var(--t2); line-height: 1.5; font-family: 'Outfit', sans-serif; }
+.pi-row::before { content: '✓'; color: var(--green); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+.after-payment {
+  background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.18);
+  border-radius: var(--r); padding: 18px 20px; text-align: left; margin-bottom: 28px;
+}
+.after-payment .ap-title {
+  font-size: .78rem; font-weight: 700; color: var(--gold);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px;
+  font-family: 'Outfit', sans-serif;
+}
+.ap-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: .85rem; color: var(--t2); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04); line-height: 1.55;
+  font-family: 'Outfit', sans-serif;
+}
+.ap-step:last-child { border-bottom: none; }
+.ap-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gold); color: #000;
+  font-size: .7rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  font-family: 'Outfit', sans-serif;
+}
+.secure-row {
+  display: flex; justify-content: center; gap: 16px;
+  font-size: .76rem; color: var(--t5); flex-wrap: wrap; margin-top: 20px;
+  font-family: 'Outfit', sans-serif;
+}
+.secure-row span { display: flex; align-items: center; gap: 5px; }
+
+/* ============================================================
+   GUARANTEE
+   ============================================================ */
+.gtee-sec {
+  background: var(--bg1);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.gtee-box {
+  background: linear-gradient(135deg, rgba(76,175,80,.07), rgba(76,175,80,.02));
+  border: 1px solid rgba(76,175,80,.28);
+  border-radius: var(--r-lg); padding: 36px 32px; text-align: center;
+  position: relative; overflow: hidden; max-width: 520px; margin: 0 auto;
+}
+.gtee-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--green), var(--gold), var(--green));
+}
+.gtee-icon { font-size: 2.5rem; margin-bottom: 14px; line-height: 1; }
+.gtee-text { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--t1); margin-bottom: 12px; line-height: 1.5; }
+.gtee-sub  { font-size: .85rem; color: var(--t4); line-height: 1.8; }
+.gtee-condition { margin-top: 14px; font-size: .76rem; color: var(--t5); font-style: italic; }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 620px; margin: 28px auto 0; }
+.faq-item {
+  background: rgba(255,255,255,.03); border: 1px solid var(--b1);
+  border-radius: var(--r); overflow: hidden;
+}
+.faq-q {
+  padding: 18px 20px; display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; font-size: 1rem; font-weight: 600; color: var(--t1); user-select: none; gap: 12px;
+  font-family: 'Outfit', sans-serif;
+}
+.faq-q:hover { background: rgba(255,255,255,.03); }
+.faq-arrow { color: var(--gold); font-size: .8rem; transition: transform .25s; flex-shrink: 0; }
+.faq-a { display: none; }
+.faq-a-inner { padding: 0 20px 18px; font-size: .98rem; color: var(--t3); line-height: 1.85; font-family: 'Outfit', sans-serif; }
+.faq-item.open .faq-a { display: block; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+/* ============================================================
+   URGENCY + FINAL CTA
+   ============================================================ */
+.urgency-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--b1);
+  padding: 60px 0;
+  position: relative; z-index: 1;
+}
+.urgency-box {
+  background: rgba(233,30,140,.05); border: 1px solid rgba(233,30,140,.2);
+  border-radius: var(--r); padding: 24px 22px; max-width: 560px; margin: 24px auto 0;
+}
+.final-sec {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,.12) 0%, transparent 70%),
+    var(--bg);
+  padding: 80px 28px 100px; text-align: center;
+  position: relative; z-index: 1;
+}
+.final-sec h2 { margin-bottom: 14px; }
+.final-sec > p { margin-bottom: 36px; font-size: 1rem; color: var(--t3); }
+.trust-bullets { display: flex; justify-content: center; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+.trust-bullet { display: flex; align-items: center; gap: 7px; font-size: .82rem; color: var(--t4); font-weight: 600; font-family: 'Outfit', sans-serif; }
+
+/* ============================================================
+   STICKY MOBILE
+   ============================================================ */
+.sticky {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  background: rgba(8,8,16,.96); border-top: 1px solid var(--b-gold);
+  padding: 12px 20px 14px; text-align: center; backdrop-filter: blur(10px);
+}
+.sticky .btn { font-size: .9rem; padding: 13px 28px; width: 90%; max-width: 340px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: #04040a; border-top: 1px solid var(--b1);
+  padding: 24px; text-align: center;
+  font-size: .72rem; color: var(--t5); position: relative; z-index: 1;
+  font-family: 'Outfit', sans-serif;
+}
+footer a { color: #444; text-decoration: none; margin-left: 16px; }
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  :root { font-size: 16px; }
+  .sticky { display: block; }
+  .wrap, .wrap-sm { padding: 0 18px; }
+  .hero { padding: 44px 18px 44px; }
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 1.75rem; }
+  p  { font-size: 1rem; }
+  .hero .mistake-headline { font-size: 1.45rem; }
+  .btn { font-size: 1rem; padding: 15px 24px; width: 100%; max-width: 340px; }
+  .btn-lg { font-size: 1.05rem; padding: 16px 24px; }
+  .who-grid { grid-template-columns: 1fr; }
+  .who-photo { width: 140px; height: 140px; }
+  .who-stats { grid-template-columns: 1fr 1fr; }
+  .method-grid { grid-template-columns: 1fr; gap: 12px; }
+  .method-card::after { display: none; }
+  .fit-grid { grid-template-columns: 1fr; }
+  .price-box { padding: 28px 18px; }
+  .price-main { font-size: 3rem; }
+  .gtee-box { padding: 28px 20px; }
+  .final-sec { padding: 60px 18px 120px; }
+  .trust-bullets { gap: 14px; }
+  .proof-bar-grid { grid-template-columns: 1fr; }
+  .countdown-wrap { padding: 12px 14px; max-width: 320px; }
+  .countdown-boxes { gap: 6px; }
+  .countdown-box { padding: 6px 4px; min-width: 0; flex: 1; }
+  .countdown-box .cd-num { font-size: 1.2rem; }
+  .countdown-box .cd-lbl { font-size: .55rem; }
+  .hero-micro { font-size: .74rem; gap: 10px; }
+  .sticky { padding: 10px 16px 12px; }
+  .sticky .btn { font-size: .88rem; padding: 12px 20px; }
+}
+@media (max-width: 400px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  .price-main { font-size: 2.8rem; }
+}
+
+/* ============================================================
+   ZEBRA — LIGHT SECTIONS
+   ============================================================ */
+.sec-light {
+  background: #f8f4ee !important;
+  --t1: #160f04;
+  --t2: #2c2010;
+  --t3: #473520;
+  --t4: #6b5238;
+  --t5: #8a7055;
+  --b1: rgba(22,15,4,0.08);
+  --b2: rgba(22,15,4,0.14);
+  --b-gold: rgba(140,100,20,0.28);
+  --b-pink: rgba(180,0,80,0.22);
+  color: #473520;
+}
+.sec-light h1, .sec-light h2 { color: #160f04; }
+.sec-light h3 { color: #160f04; }
+.sec-light p  { color: #473520; }
+.sec-light strong { color: #160f04; }
+.sec-light .sec-label { color: var(--pink); }
+.sec-light .sec-cta { border-color: rgba(22,15,4,0.1); }
+.sec-light .sec-cta-btn {
+  background: rgba(201,168,76,0.1); border-color: rgba(140,100,20,0.3);
+  color: #6b4800 !important;
+}
+.sec-light .sec-cta-btn:hover { background: rgba(201,168,76,0.2); }
+
+/* Proof cards in light */
+.sec-light .proof-card { background: #fff; border-color: rgba(22,15,4,0.1); }
+.sec-light .proof-card::before { opacity: .15; }
+.sec-light .proof-gold { background: rgba(201,168,76,0.06); border-color: rgba(140,100,20,0.2); }
+.sec-light .proof-name { color: #160f04; }
+.sec-light .proof-title { color: #6b5238; }
+.sec-light .proof-quote { color: #2c2010; }
+.sec-light .proof-num-item { background: rgba(201,168,76,0.1); border-color: rgba(140,100,20,0.2); }
+.sec-light .screen-item { border-color: rgba(22,15,4,0.12); }
+.sec-light .screen-caption { background: #f0ebe2; color: #473520; border-color: rgba(22,15,4,0.08); }
+.sec-light .screen-caption strong { color: #2a7a2a; }
+
+/* Deliver in light */
+.sec-light .deliver-item { background: rgba(201,168,76,0.07); border-color: rgba(140,100,20,0.2); }
+.sec-light .deliver-text h3 { color: #6b4800; }
+.sec-light .deliver-text p  { color: #6b5238; }
+
+/* Includes in light */
+.sec-light .inc-item { background: rgba(22,15,4,0.03); border-color: rgba(22,15,4,0.08); }
+.sec-light .inc-item.bonus { background: rgba(201,168,76,0.08); border-color: rgba(140,100,20,0.25); }
+.sec-light .inc-text h3 { color: #160f04; }
+.sec-light .inc-item.bonus .inc-text h3 { color: #7a5500; }
+.sec-light .inc-text p  { color: #6b5238; }
+.sec-light .bonus-mechanism { background: rgba(201,168,76,0.08); border-color: rgba(140,100,20,0.2); color: #473520; }
+.sec-light .bonus-mechanism strong { color: #7a5500; }
+
+/* Photo in light */
+.sec-light .photo-wrap { box-shadow: 0 16px 64px rgba(233,30,140,0.1); }
+
+/* Proof bar in light */
+.sec-light .screen-item { background: #fff; }
+
+/* Guarantee in light */
+.sec-light .gtee-box { background: rgba(76,175,80,0.06); border-color: rgba(40,140,40,0.3); }
+.sec-light .gtee-text { color: #160f04; }
+.sec-light .gtee-sub { color: #473520; }
+.sec-light .gtee-condition { color: #6b5238; }
+</style>
+
+<script>
+/* ====== FAQ ====== */
+function wstFaq(el) { el.parentElement.classList.toggle('open'); }
+
+/* ====== CINEMATIC SCROLL ====== */
+var _wstScrollRaf = null;
+function wstFindScroller() {
+  var el = document.body;
+  while (el && el !== document.documentElement) {
+    var st = getComputedStyle(el);
+    var oy = st.overflowY || st.overflow;
+    if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 4) return el;
+    el = el.parentElement;
+  }
+  return null;
+}
+function wstGetScrollY(sc) { return sc ? sc.scrollTop : (window.pageYOffset || document.documentElement.scrollTop); }
+function wstSetScrollY(sc, y) {
+  if (sc) { sc.scrollTop = y; }
+  else { window.scrollTo(0, y); document.documentElement.scrollTop = y; document.body.scrollTop = y; }
+}
+function wstElTop(el, sc) {
+  var rect = el.getBoundingClientRect();
+  if (sc) { var cRect = sc.getBoundingClientRect(); return rect.top - cRect.top + sc.scrollTop; }
+  return rect.top + wstGetScrollY(null);
+}
+function wstToPrice(e) {
+  e.preventDefault();
+  var priceEl = document.getElementById('price-anchor') || document.querySelector('.price-sec');
+  if (!priceEl) return;
+  var sc = wstFindScroller();
+  wstCinematicScroll(wstElTop(priceEl, sc), sc);
+}
+function wstCinematicScroll(targetY, sc) {
+  if (_wstScrollRaf) cancelAnimationFrame(_wstScrollRaf);
+  var startY = wstGetScrollY(sc);
+  var distance = targetY - startY;
+  // uniform speed: ~3000px/sec, min 600ms, max 3500ms
+  var duration = Math.min(3500, Math.max(600, Math.abs(distance) / 3));
+  var startTime = null; var paused = false; var scrollEl = sc || window;
+  function onInterrupt() { paused = true; _wstScrollRaf && cancelAnimationFrame(_wstScrollRaf); }
+  scrollEl.addEventListener('wheel', onInterrupt, { once:true, passive:true });
+  scrollEl.addEventListener('touchstart', onInterrupt, { once:true, passive:true });
+  function step(ts) {
+    if (paused) return;
+    if (!startTime) startTime = ts;
+    var elapsed = Math.min(ts - startTime, duration);
+    wstSetScrollY(sc, startY + distance * (elapsed / duration));
+    if (elapsed < duration) {
+      _wstScrollRaf = requestAnimationFrame(step);
+    } else {
+      wstSetScrollY(sc, targetY);
+      scrollEl.removeEventListener('wheel', onInterrupt);
+      scrollEl.removeEventListener('touchstart', onInterrupt);
+    }
+  }
+  _wstScrollRaf = requestAnimationFrame(step);
+}
+
+/* ====== LIGHTBOX ====== */
+function wstLbOpen(el) {
+  var img = el.querySelector('img');
+  if (!img) return;
+  document.getElementById('wstLbImg').src = img.src;
+  document.getElementById('wstLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function wstLbClose() {
+  document.getElementById('wstLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') wstLbClose(); });
+
+/* ====== COUNTDOWN ====== */
+var WST_DEADLINE = new Date('2026-05-31T00:00:00+03:00').getTime();
+function wstCountdownTick() {
+  var now = Date.now(); var diff = WST_DEADLINE - now;
+  var els = document.querySelectorAll('.wst-cd');
+  if (diff <= 0) {
+    els.forEach(function(el) { el.innerHTML = '<div class="countdown-label">The offer has ended. Price has increased.</div>'; });
+    return;
+  }
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  var html = '<div class="countdown-label">&#9200; Price goes up on 31 May at midnight</div>'
+    + '<div class="countdown-boxes">'
+    + '<div class="countdown-box"><div class="cd-num">' + d + '</div><div class="cd-lbl">Days</div></div>'
+    + '<div class="countdown-box"><div class="cd-num">' + String(h).padStart(2,'0') + '</div><div class="cd-lbl">Hours</div></div>'
+    + '<div class="countdown-box"><div class="cd-num">' + String(m).padStart(2,'0') + '</div><div class="cd-lbl">Minutes</div></div>'
+    + '<div class="countdown-box"><div class="cd-num">' + String(s).padStart(2,'0') + '</div><div class="cd-lbl">Seconds</div></div>'
+    + '</div>'
+    + '<div class="countdown-after">After 31 May, <strong>the price goes up</strong></div>';
+  els.forEach(function(el) { el.innerHTML = html; });
+}
+setInterval(wstCountdownTick, 1000);
+document.addEventListener('DOMContentLoaded', function() {
+  wstCountdownTick();
+  /* ====== SCROLL FADE ANIMATIONS ====== */
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(function(el) { obs.observe(el); });
+});
+</script>
+</head>
+<body>
+
+<!-- Ambient glow -->
+<div class="bg-glow" aria-hidden="true">
+  <div class="g1"></div>
+  <div class="g2"></div>
+</div>
+
+<!-- ===== CONFIRM BAR ===== -->
+<div class="confirm-bar">
+  <div class="cb-headline">In 3 minutes you'll see exactly what's not working</div>
+  <div class="cb-sub">&#11015;&#65039; Your training is waiting below. On the way down, give us 3 minutes to show you why the diary isn't full.</div>
+</div>
+
+<!-- ===== EYEBROW ===== -->
+<div class="eyebrow-wrap">
+  <div class="eyebrow-pill">
+    <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/21507233/file/0422e3aa52ea89fd29585d8469cef652.jpg" alt="Or & Naor">
+    <span>Or &amp; Naor | Personal Strategy Session</span>
+  </div>
+</div>
+
+<!-- ===== TOC ===== -->
+<section class="toc-sec">
+  <div class="wrap">
+    <div class="toc-label">&#128073; Jump straight to what interests you</div>
+    <div class="toc-grid">
+      <a class="toc-btn" href="#sec-bridge" onclick="document.getElementById('sec-bridge').scrollIntoView({behavior:'smooth'});return false;">&#128269; Why the session</a>
+      <a class="toc-btn" href="#sec-who" onclick="document.getElementById('sec-who').scrollIntoView({behavior:'smooth'});return false;">&#128100; Who we are</a>
+      <a class="toc-btn" href="#sec-deliver" onclick="document.getElementById('sec-deliver').scrollIntoView({behavior:'smooth'});return false;">&#9989; What you get</a>
+      <a class="toc-btn" href="#sec-method" onclick="document.getElementById('sec-method').scrollIntoView({behavior:'smooth'});return false;">&#9881; How it works</a>
+      <a class="toc-btn" href="#sec-proof" onclick="document.getElementById('sec-proof').scrollIntoView({behavior:'smooth'});return false;">&#128172; Client results</a>
+      <a class="toc-btn" href="#sec-includes" onclick="document.getElementById('sec-includes').scrollIntoView({behavior:'smooth'});return false;">&#127873; What's included</a>
+      <a class="toc-btn" href="#sec-fit" onclick="document.getElementById('sec-fit').scrollIntoView({behavior:'smooth'});return false;">&#128203; Who it's for</a>
+      <a class="toc-btn" href="#sec-faq" onclick="document.getElementById('sec-faq').scrollIntoView({behavior:'smooth'});return false;">&#10067; FAQ</a>
+      <a class="toc-btn" href="#sec-gtee" onclick="document.getElementById('sec-gtee').scrollIntoView({behavior:'smooth'});return false;">&#9989; Guarantee</a>
+      <a class="toc-btn cta-jump" href="#price-anchor" onclick="wstToPrice(event)">&#128073; Details &amp; pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/21507233/file/0422e3aa52ea89fd29585d8469cef652.jpg" alt="Or & Naor">
+    Or &amp; Naor | Personal Strategy Session
+  </div>
+
+  <div class="mistake-box fade-up">
+    <span class="mistake-label">&#9888;&#65039; A mistake most beauty pros make</span>
+    <h2 class="mistake-headline">You don't need another qualification.<br><span class="txt-pink">You need to fill the diary with the skills you already have.</span></h2>
+
+    <p class="hero-sub">
+      So many beauty pros make the same mistake. They learn nails, then lashes, then brows, then facials, then microblading. Always chasing the next course, another certificate, another specialty. Thinking that more knowledge is the key to success.
+    </p>
+    <p class="hero-sub">
+      But the problem was never the knowledge. The problem is that there is no system bringing clients to the skill you already have.
+    </p>
+
+    <div class="hero-highlight">
+      <p><strong style="color:var(--gold);">The shift that needs to happen:</strong> First, reach five figures a month from the skill you already chose. Stabilise with a full diary bringing in at least A$5,000 a month. Only after that works should you think about expanding into other areas.</p>
+    </div>
+
+    <p class="hero-sub" style="margin-bottom:0;">
+      Every dollar spent on another course before your first skill is profitable is a dollar that won't come back. The session helps you stop chasing more certificates and focus on what you already have. Because from that alone you can build a serious business earning tens of thousands of dollars a month.
+    </p>
+  </div>
+
+  <a href="#price-anchor" class="btn btn-lg" onclick="wstToPrice(event)">
+    I want the session. Details &amp; pricing
+  </a>
+  <div class="countdown-wrap wst-cd" style="margin-top:24px;"></div>
+  <div class="hero-micro">
+    <span>&#128274; Secure payment</span>
+    <span>&#128197; Instant booking</span>
+    <span>&#127942; Results guarantee</span>
+  </div>
+</section>
+
+<!-- ===== PHOTO ===== -->
+<section class="photo-sec sec-light">
+  <div class="wrap tc">
+    <span class="sec-label">Our community</span>
+    <h2>Beauty business owners who boosted their income with paid advertising</h2>
+    <div class="photo-wrap">
+      <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22105867/file/8d0abe777667f2beba3da679854e3f9b.png" alt="36 beauty business owners who worked with Or & Naor">
+    </div>
+    <p style="margin-top:18px;font-size:.82rem;color:var(--t4);">Cosmeticians, nail techs and lash artists who built a stable business with guidance from <span class="gold-name">Or &amp; Naor</span></p>
+  </div>
+</section>
+
+<!-- ===== WHO WE ARE ===== -->
+<section class="who-sec" id="sec-who">
+  <div class="wrap">
+    <span class="sec-label">Who we are</span>
+    <h2>Or &amp; Naor. Marketing specialists for beauty businesses.</h2>
+    <div class="who-grid">
+      <div>
+        <div class="who-photo">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/21507233/file/0422e3aa52ea89fd29585d8469cef652.jpg" alt="Or & Naor">
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.95rem;color:var(--t2);margin-bottom:16px;line-height:1.9;">
+          Working with cosmeticians, nail techs and lash artists since 2020.<br>
+          Not with brands. Not with big companies.<br>
+          <strong>With beauty business owners who want a full diary and a stable business.</strong>
+        </p>
+        <p style="font-size:.87rem;color:var(--t4);margin-bottom:16px;">
+          We kept seeing the same problem: an amazing professional, years of experience, and still the diary isn't full. Not because of a lack of skill. Because there's no system working for her.
+        </p>
+        <div class="who-stats">
+          <div class="who-stat fade-up">
+            <div class="n">1000s</div>
+            <div class="l">Enquiries for treatments at clinics</div>
+          </div>
+          <div class="who-stat fade-up">
+            <div class="n">A$10K+</div>
+            <div class="l">Monthly income after implementation</div>
+          </div>
+          <div class="who-stat fade-up" style="grid-column:span 2;">
+            <div class="n">A$3.30</div>
+            <div class="l">Average cost per potential client<br><span style="font-size:.71rem;color:var(--t5);font-weight:400;">That means: A$30/day on ads brings an average of 9 new client enquiries</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; I want you to build me a plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROOF BAR ===== -->
+<section class="proof-bar sec-light">
+  <div class="wrap">
+    <p class="tc" style="font-size:.74rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:'Outfit',sans-serif;">These numbers are from our system. Real. Not mockups.</p>
+    <p class="tc" style="font-size:.82rem;color:var(--t4);margin-bottom:20px;">In the last week alone: <strong style="color:var(--pink);">299 enquiries</strong> from women wanting to fill their diary. Since the start of operations: <strong style="color:var(--pink);">1,140 women</strong>. The pace grows every month.</p>
+    <div class="proof-bar-grid">
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121902/file/b3d1f8aa54eb89d2b03ec3520355585b.png" alt="Total enquiries since launch">
+        <div class="screen-caption"><strong>Total</strong> since launch</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121951/file/fa56dc81926a67e0a14bb71d868bab37.png" alt="1,140 women since campaign start">
+        <div class="screen-caption"><strong>1,140 women</strong> since campaign start</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121994/file/8face8ab82e4634c872d140fe951e137.png" alt="299 enquiries last week">
+        <div class="screen-caption"><strong>299 enquiries</strong> in the last week</div>
+      </div>
+    </div>
+    <p class="tc" style="margin-top:18px;font-size:.83rem;color:var(--t4);">Every one of them wants exactly what you want. They're all looking for clients. The question is who shows up with a system.</p>
+  </div>
+</section>
+
+<!-- ===== BRIDGE ===== -->
+<section class="bridge-sec" id="sec-bridge">
+  <div class="wrap">
+    <span class="sec-label">Why the session</span>
+    <h2 style="margin-bottom:20px;">A diary doesn't fill itself from knowledge. It fills from a system.</h2>
+    <p>Your skill is not the problem. Your marketing is the problem. And in marketing there's no "one-size-fits-all approach." What works for a nail tech in Sydney is different from what works for a nail tech in Melbourne.</p>
+    <div class="bridge-highlight">
+      <strong>That's exactly what the session does:</strong> We look at your business. We build a strategy that fits your area, your clients, your available time. And you walk out with 3 steps you start executing the very next day.
+    </div>
+    <div class="bridge-urgency">
+      <span class="u-label">&#9888;&#65039; The industry is growing. Every month.</span>
+      <p style="margin:0 0 12px;font-size:.93rem;color:var(--t2);line-height:1.85;">More beauty pros are entering the competition. They've all taken a course. They all want to fill their diary. They're all competing for the same clients in your area.</p>
+      <p style="margin:0 0 12px;font-size:.93rem;color:var(--t2);line-height:1.85;">When the industry grows and the client pool doesn't grow at the same pace, those who have a system find clients. Those who don't have a system wait for the phone to ring.</p>
+      <p style="margin:0;font-size:.93rem;color:var(--t2);line-height:1.85;">This is not a disaster. It's reality. The only question is: how much longer will you keep going without a system.</p>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; How much longer? I'm ready to move.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DELIVERABLES ===== -->
+<section class="deliver-sec sec-light" id="sec-deliver">
+  <div class="wrap">
+    <span class="sec-label tc">What you walk away with</span>
+    <h2 class="tc">By the end of the session you'll have these. Written down. Concrete.</h2>
+    <p class="deliver-sub">Not "a general direction." Not "think about it." These are the things you'll leave the session with.</p>
+    <div class="deliver-list">
+      <div class="deliver-item fade-up">
+        <div class="deliver-num">1</div>
+        <div class="deliver-text">
+          <h3>Analysis of what's holding you back right now</h3>
+          <p>You'll know exactly why the diary isn't full. Not a feeling. A real analysis of what's happening in your business.</p>
+        </div>
+      </div>
+      <div class="deliver-item fade-up">
+        <div class="deliver-num">2</div>
+        <div class="deliver-text">
+          <h3>A marketing strategy tailored to your business</h3>
+          <p>Not a generic template. A strategy built for your type of clients, your area, and the time you have available.</p>
+        </div>
+      </div>
+      <div class="deliver-item fade-up">
+        <div class="deliver-num">3</div>
+        <div class="deliver-text">
+          <h3>A financial plan with real numbers</h3>
+          <p>How many appointments per week you need. How much to charge. The realistic path to A$10,000 per month.</p>
+        </div>
+      </div>
+      <div class="deliver-item fade-up">
+        <div class="deliver-num">4</div>
+        <div class="deliver-text">
+          <h3>3 steps to start executing this week</h3>
+          <p>Not a list of 20 things. 3 specific actions you can start implementing the day after the session.</p>
+        </div>
+      </div>
+      <div class="deliver-item fade-up">
+        <div class="deliver-num">5</div>
+        <div class="deliver-text">
+          <h3>The session recording so you can revisit it anytime</h3>
+          <p>Everything discussed in the session is recorded. You can go back, review, and check you're implementing correctly.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; I want to leave with a plan. How much is it?</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AFTER THE SESSION ===== -->
+<section class="after-sec">
+  <div class="wrap">
+    <span class="sec-label tc">What happens after the session</span>
+    <h2 class="tc" style="margin-bottom:12px;">You leave the session a different person</h2>
+    <p class="tc" style="font-size:.9rem;color:var(--t4);margin-bottom:0;">Not just with ideas. With total clarity, focus, and a motivation you haven't felt in a long time.</p>
+    <div class="after-cards">
+      <div class="after-card after-gold fade-up">
+        <h3>&#127919; Complete clarity on your numbers</h3>
+        <p>You'll know exactly what it takes to reach A$10,000 a month. How many appointments per week, how much to charge, how many new clients you need each month. And A$10,000 a month is over A$120,000 a year of revenue. It's not a dream. It's maths. And there are women who got there and even built real wealth from their skill in this industry.</p>
+      </div>
+      <div class="after-card after-pink fade-up">
+        <h3>&#128165; A mindset shift from hobby to real business</h3>
+        <p>The session isn't just technical. It changes the way you look at your business. You stop operating like a hobby and start thinking like a business owner making real money. It's mental and technical coaching at the same time. You connect with your goals, your targets, and realise everything is possible when you have a clear plan.</p>
+      </div>
+      <div class="after-card after-green fade-up">
+        <h3>&#128293; Motivation you feel from the very first moment</h3>
+        <p>When you see the numbers on paper and realise it's truly achievable, something shifts. Our clients say the week after the session is the most productive week they've ever had in their business. Not because of magic. Because finally there's clarity, there's focus, and there's a plan tied to real targets.</p>
+      </div>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; I want that clarity. Show me the details.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section class="method-sec" id="sec-method">
+  <div class="wrap">
+    <span class="sec-label tc">How the session works</span>
+    <h2 class="tc">Three steps. One hour.</h2>
+    <div class="method-grid">
+      <div class="method-card fade-up">
+        <div class="method-step">Step 1</div>
+        <div class="method-icon">&#128269;</div>
+        <div class="method-title">Diagnosis</div>
+        <p class="method-desc">We look at your business. Numbers, marketing, clients, pricing. We figure out what's working and what's stalling.</p>
+      </div>
+      <div class="method-card fade-up">
+        <div class="method-step">Step 2</div>
+        <div class="method-icon">&#128196;</div>
+        <div class="method-title">Plan</div>
+        <p class="method-desc">We build a strategy together that fits you. Not someone else's business. Yours.</p>
+      </div>
+      <div class="method-card fade-up">
+        <div class="method-step">Step 3</div>
+        <div class="method-icon">&#9889;</div>
+        <div class="method-title">Steps for this week</div>
+        <p class="method-desc">We finish with 3 concrete actions. Clear. That you start executing the very next day.</p>
+      </div>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; One hour. A$180. I'm in.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VIDEO ===== -->
+<section class="video-sec">
+  <div class="wrap tc">
+    <span class="sec-label">Real testimonial</span>
+    <h2>See what happened to our client after we started working together</h2>
+    <p style="font-size:.86rem;color:var(--t4);margin-top:8px;">This video shows exactly what happens when you have a system working for you.</p>
+    <div class="video-wrap">
+      <div class="video-ratio">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/nKUP3MJELHo?start=186&amp;rel=0&amp;modestbranding=1&amp;playsinline=1"
+          title="Client testimonial" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL PROOF ===== -->
+<section class="proof-sec sec-light" id="sec-proof">
+  <div class="wrap">
+    <span class="sec-label tc">Real results</span>
+    <h2 class="tc">What happens when you build a system the right way</h2>
+    <p class="tc" style="font-size:.86rem;color:var(--t4);margin-bottom:32px;">Real names and details. Not persuasion. Documentation.</p>
+
+    <!-- Daniella -->
+    <div class="proof-card fade-up">
+      <div class="proof-meta">
+        <div class="proof-avatar">&#128167;</div>
+        <div>
+          <div class="proof-name">Daniella</div>
+          <div class="proof-title">Nail tech, Netanya. Mum of young kids</div>
+          <div class="proof-result">Quit 3 jobs after 3 months</div>
+        </div>
+      </div>
+      <p class="proof-quote">"Since you started yesterday I've closed 5 new clients and more are coming. You guys are absolute legends."</p>
+      <p style="font-size:.84rem;color:var(--t4);margin-top:10px;line-height:1.8;">
+        Daniella came to us while splitting herself between 3 jobs. Within 3 months of her campaign, she told them all she was done. The business is all that remains.
+      </p>
+      <div class="proof-numbers">
+        <div class="proof-num-item"><strong>331</strong>Enquiries from campaign</div>
+        <div class="proof-num-item"><strong>A$2,300</strong>Total ad spend</div>
+        <div class="proof-num-item"><strong>3 months</strong>Until she quit</div>
+      </div>
+      <p style="font-size:.73rem;color:var(--t5);margin-top:8px;line-height:1.7;">The revenue from treatments rolled back into ads. The campaign funded itself.</p>
+      <div style="margin-top:18px;display:grid;grid-template-columns:1fr;gap:12px;">
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121094/file/b3f2ea3c6b15194aaf5df93a6008e5ca.jpg" alt="WhatsApp message from Daniella">
+          <div class="screen-caption"><strong>WhatsApp</strong> Day one of the campaign</div>
+        </div>
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121033/file/0fab9d8bae4959646d85555c8381c9fc.png" alt="Daniella 331 enquiries on A$2,300 budget">
+          <div class="screen-caption"><strong>331 enquiries</strong> on A$2,300 budget</div>
+        </div>
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122230/file/7a4db9a95fdb41a67fcbaee058d76cd8.png" alt="Daniella all-time results">
+          <div class="screen-caption"><strong>All-time</strong> campaign results</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maya -->
+    <div class="proof-card proof-gold fade-up">
+      <div class="proof-meta">
+        <div class="proof-avatar">&#9728;&#65039;</div>
+        <div>
+          <div class="proof-name">Maya</div>
+          <div class="proof-title">Cosmetician, Ramat Gan</div>
+          <div class="proof-result gold">About the session itself</div>
+        </div>
+      </div>
+      <p class="proof-quote">"I didn't know you could build such a clear plan in one hour. I left with numbers, with steps, with an understanding of what I needed to change. The week after the session I was busy. Not waiting."</p>
+      <p style="font-size:.82rem;color:var(--t4);line-height:1.8;margin-top:10px;">
+        Maya came to the session with no campaign, no system, and a half-empty diary. In the session we built a realistic financial roadmap together. One week later she launched her first campaign.
+      </p>
+    </div>
+
+    <!-- Atara -->
+    <div class="proof-card fade-up">
+      <div class="proof-meta">
+        <div class="proof-avatar">&#128167;</div>
+        <div>
+          <div class="proof-name">Atara</div>
+          <div class="proof-title">Nail tech, Jerusalem Malha. Age 26</div>
+          <div class="proof-result">From 0 to 4 staff working under her</div>
+        </div>
+      </div>
+      <p class="proof-quote">She started paid ads in November 2024. Today, less than a year and a half later, she runs a studio with 4 employees in Jerusalem. All with a full diary. Her campaign has been running non-stop.</p>
+      <div class="proof-numbers">
+        <div class="proof-num-item"><strong>Nov 2024</strong>Started paid ads</div>
+        <div class="proof-num-item"><strong>4 staff</strong>Working under her today</div>
+        <div class="proof-num-item"><strong>Jerusalem</strong>Full diary</div>
+      </div>
+      <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121509/file/234c2f06b98a6e3ec3a845ed6e6f1ab8.png" alt="Atara results May 2026">
+          <div class="screen-caption"><strong>Results</strong> 1-4 May</div>
+        </div>
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22121639/file/73f5e8aaf95cecd73910c7c5ef87856f.png" alt="Atara campaign history">
+          <div class="screen-caption"><strong>Campaigns</strong> from November to today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shiral -->
+    <div class="proof-card fade-up">
+      <div class="proof-meta">
+        <div class="proof-avatar">&#128167;</div>
+        <div>
+          <div class="proof-name">Shiral</div>
+          <div class="proof-title">Nail tech, Kiryat Yam</div>
+          <div class="proof-result">671 enquiries. Diary full from morning to night.</div>
+        </div>
+      </div>
+      <p style="font-size:.84rem;color:var(--t4);margin-top:10px;line-height:1.8;">
+        Shiral saw a friend who had just finished a course already with a full diary. She realised if she didn't move now, the gap would only widen. She decided she wanted her diary full from morning to night. That's exactly what happened.
+      </p>
+      <div class="proof-numbers">
+        <div class="proof-num-item"><strong>671</strong>Conversations started</div>
+        <div class="proof-num-item"><strong>A$4.80</strong>Per enquiry</div>
+        <div class="proof-num-item"><strong>A$3,200</strong>Total ad spend</div>
+      </div>
+      <div style="margin-top:18px;display:grid;grid-template-columns:1fr;gap:12px;">
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22135982/file/e63fd6093182d9090529fd73d604fb27.png" alt="Shiral WhatsApp testimonial">
+          <div class="screen-caption"><strong>Shiral</strong> in her own words</div>
+        </div>
+        <div class="screen-item" onclick="wstLbOpen(this)">
+          <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22135985/file/7b8711b6de63cbb74b7997164772c5f9.png" alt="Shiral Facebook data 671 conversations">
+          <div class="screen-caption"><strong>671 conversations</strong> · A$4.80/enquiry · A$3,200 total</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCREENSHOTS GALLERY ===== -->
+<section class="screens-sec">
+  <div class="wrap">
+    <span class="sec-label tc">Proof from the field</span>
+    <h2 class="tc">Results from real campaigns</h2>
+    <p class="screens-intro">Real screenshots from clients. Real numbers. Not mockups.</p>
+    <div class="screens-grid">
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122125/file/179926d9cf359f022359d7f65f49f4a7.png" alt="Aviv nail enquiries Holon">
+        <div class="screen-caption"><strong>Aviv</strong> Nails, Holon</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122186/file/b8eba1649efff184632b2cdb98b685b6.png" alt="Omer nail enquiries Kiryat Gat and Ofakim">
+        <div class="screen-caption"><strong>Omer</strong> Kiryat Gat &amp; Ofakim</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122215/file/75c517161f4a29870ee211815ce2ddb4.png" alt="Anastasia brow shaping Nahariya">
+        <div class="screen-caption"><strong>Anastasia</strong> Brow shaping, Nahariya</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122305/file/f759ee37afbfc1a70eaa70f16d7da8ed.png" alt="Hai manicurist Kiryat Gat">
+        <div class="screen-caption"><strong>Hai</strong> Manicurist, Kiryat Gat</div>
+      </div>
+      <div class="screen-item" onclick="wstLbOpen(this)">
+        <img src="https://statics.myclickfunnels.com/workspace/JAyrDO/image/22122386/file/586937ddcce1e401f9fb34b11ff30e6d.png" alt="Meital nails results last week">
+        <div class="screen-caption"><strong>Meital</strong> Nails, last week</div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:22px;font-size:.78rem;color:var(--t5);">Click any image to enlarge</p>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; I want results like these too</a>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="wst-lb" id="wstLightbox" onclick="wstLbClose()">
+  <div class="wst-lb-close" onclick="wstLbClose()">&#10005;</div>
+  <img id="wstLbImg" src="" alt="">
+</div>
+
+<!-- ===== WHAT'S INCLUDED ===== -->
+<section class="includes-sec sec-light" id="sec-includes">
+  <div class="wrap">
+    <span class="sec-label tc">What's included in the session</span>
+    <h2 class="tc">What you get in the session</h2>
+    <div class="inc-list">
+      <div class="inc-item fade-up">
+        <div class="inc-icon">&#127775;</div>
+        <div class="inc-text">
+          <h3>Personal Zoom session. One hour. 1-on-1.</h3>
+          <p>Not a group. Not a lecture. A conversation between the three of us focused entirely on your business.</p>
+        </div>
+      </div>
+      <div class="inc-item fade-up">
+        <div class="inc-icon">&#128200;</div>
+        <div class="inc-text">
+          <h3>Financial and strategic analysis</h3>
+          <p>We break down your numbers and build a realistic path to stable income.</p>
+        </div>
+      </div>
+      <div class="inc-item fade-up">
+        <div class="inc-icon">&#128196;</div>
+        <div class="inc-text">
+          <h3>Written action plan</h3>
+          <p>You leave the session with specific actions. Not a wish list.</p>
+        </div>
+      </div>
+      <div class="inc-item fade-up">
+        <div class="inc-icon">&#127911;</div>
+        <div class="inc-text">
+          <h3>Session recording to keep forever</h3>
+          <p>Go back, refresh, check you're implementing correctly. Yours forever.</p>
+        </div>
+      </div>
+      <div class="inc-item bonus fade-up">
+        <div class="inc-icon">&#127381;</div>
+        <div class="inc-text">
+          <h3>The complete paid-ads digital course. Free.</h3>
+          <p>A full course that stays with you forever. Not "another course sitting in a folder."</p>
+        </div>
+      </div>
+    </div>
+    <div class="bonus-mechanism">
+      <strong>Why is the course included and not sold separately?</strong><br>
+      Because we noticed that people who got a plan in the session and then opened the course actually did something with it.
+      The course isn't an extra product. It's the implementation tool for what we build in the session. Without it, part of the plan stays theory.
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; A$180 until 31 May. I want everything.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FIT / NOT FIT ===== -->
+<section class="fit-sec" id="sec-fit">
+  <div class="wrap">
+    <span class="sec-label tc">Before we continue</span>
+    <h2 class="tc">Who the session is for. And who it's not for.</h2>
+    <div class="fit-grid">
+      <div class="fit-card fit-yes fade-up">
+        <div class="fit-head">&#10003; Right for you if</div>
+        <div class="fit-item">You're a beauty business owner who wants regular clients</div>
+        <div class="fit-item">Your diary isn't full and you're not sure why</div>
+        <div class="fit-item">You've tried marketing on your own and couldn't close</div>
+        <div class="fit-item">You don't have a lead system working for you</div>
+        <div class="fit-item">You're ready to receive direct feedback and act on it</div>
+        <div class="fit-item">You're just starting out and want to start the right way</div>
+      </div>
+      <div class="fit-card fit-no fade-up">
+        <div class="fit-head">&#10007; Not right if</div>
+        <div class="fit-item">You want someone to do everything for you</div>
+        <div class="fit-item">You don't intend to implement what we discuss</div>
+        <div class="fit-item">You're looking for results with zero investment</div>
+        <div class="fit-item">You already have a lead system bringing in clients</div>
+      </div>
+    </div>
+    <div class="sec-cta">
+      <a class="sec-cta-btn" href="#price-anchor" onclick="wstToPrice(event)">&#128073; No more excuses. I want to start.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY NOW ===== -->
+<section class="whynow-sec">
+  <div class="wrap">
+    <span class="sec-label tc">Why book now</span>
+    <h2 class="tc" style="margin-bottom:32px;">5 reasons to pay for the session without thinking twice</h2>
+    <div class="whynow-list">
+      <div class="whynow-item fade-up">
+        <div class="whynow-num">1</div>
+        <div>
+          <h3>After the session you know exactly what to do</h3>
+          <p>No generic advice. No "try this." We sit with you, look at your numbers, and tell you step by step what needs to happen for you to reach your goals. You leave the session with a precise plan and your numbers on paper.</p>
+        </div>
+      </div>
+      <div class="whynow-item fade-up">
+        <div class="whynow-num">2</div>
+        <div>
+          <h3>One new client pays back the investment</h3>
+          <p>An average treatment costs A$100 to A$200. One client who comes in thanks to the strategy we build together, and you're already in profit. Every client after that? Bonus.</p>
+        </div>
+      </div>
+      <div class="whynow-item fade-up">
+        <div class="whynow-num">3</div>
+        <div>
+          <h3>A$180 is less than what you spend on supplies in a month</h3>
+          <p>Less than gel and tips. Less than a dinner out. Less than a course sitting in a folder that nobody opens. The difference: from the session you leave with a plan you start implementing tomorrow.</p>
+        </div>
+      </div>
+      <div class="whynow-item fade-up">
+        <div class="whynow-num">4</div>
+        <div>
+          <h3>You already invested 5 minutes on the questionnaire. Don't throw that away.</h3>
+          <p>You answered 9 questions. You discovered what's holding you back. Now we have an accurate picture of your business. If you close this page, it all goes to waste. The session is the step that turns those answers into an action plan.</p>
+        </div>
+      </div>
+      <div class="whynow-item green fade-up">
+        <div class="whynow-num g">&#10003;</div>
+        <div>
+          <h3>No risk. Only upside.</h3>
+          <p>You leave without a clear plan? We refund your A$180. All of it. No questions asked. The only thing you can lose is one hour. The thing you can gain is a full business.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICE ===== -->
+<section class="price-sec" id="price-anchor">
+  <div class="wrap">
+    <span class="sec-label tc">The investment</span>
+    <h2 class="tc">How much does the session cost</h2>
+    <div class="price-box">
+      <div class="price-label">&#9200; Special price until 31 May only</div>
+      <div class="price-was">True value: A$399</div>
+      <div class="price-main">A$180</div>
+      <div class="price-note">One-time payment. Everything included.</div>
+
+      <div class="price-includes">
+        <div class="pi-row">Personal Zoom session. One hour. 1-on-1 with Or &amp; Naor.</div>
+        <div class="pi-row">Financial and strategic analysis of your business</div>
+        <div class="pi-row">A marketing strategy tailored to your business</div>
+        <div class="pi-row">An action plan with 3 steps for this week</div>
+        <div class="pi-row">Session recording to keep forever (value A$45)</div>
+        <div class="pi-row">The complete paid-ads digital course (value A$199)</div>
+      </div>
+
+      <div class="after-payment">
+        <div class="ap-title">&#128073; What happens after payment</div>
+        <div class="ap-step">
+          <div class="ap-num">1</div>
+          <span>You receive a link to book a session time that suits you. Usually within 2 to 4 days.</span>
+        </div>
+        <div class="ap-step">
+          <div class="ap-num">2</div>
+          <span>Before the session we send you a short questionnaire so we come prepared. The session itself starts at the right point.</span>
+        </div>
+        <div class="ap-step">
+          <div class="ap-num">3</div>
+          <span>At the end of the session you leave with a clear action plan and access to the digital course.</span>
+        </div>
+      </div>
+
+      <a href="https://pay.grow.link/5eecd548df3ba88dba08782d599a6a8e-MzE2Nzc0Mg" class="btn btn-lg" target="_blank" style="display:block;text-align:center;max-width:400px;margin:0 auto;">
+        I want a plan for my business
+      </a>
+      <span class="btn-sub">Click to go to the secure checkout page</span>
+
+      <div class="countdown-wrap wst-cd" style="margin-top:20px;"></div>
+
+      <div class="secure-row">
+        <span>&#128274; SSL secured</span>
+        <span>&#9989; Instant booking</span>
+        <span>&#127942; Results guarantee</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GUARANTEE ===== -->
+<section class="gtee-sec sec-light" id="sec-gtee">
+  <div class="wrap">
+    <div class="gtee-box">
+      <div class="gtee-icon">&#9878;</div>
+      <div class="gtee-text">You leave the session without a clear plan? We refund your A$180. All of it.</div>
+      <p class="gtee-sub">We've seen more than 36 beauty business owners come in without direction and leave with a plan they started implementing that same week. This guarantee exists because we are confident in the process.</p>
+      <p class="gtee-condition">Condition: Full participation in the session and completion of the questionnaire beforehand. Those who don't attend the session are not eligible for a refund.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-sec" id="sec-faq">
+  <div class="wrap-sm">
+    <span class="sec-label tc">FAQ</span>
+    <h2 class="tc">10 questions you're probably asking right now</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>I don't have an ad budget right now. Is the session still worth it?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes. The session doesn't assume you have an ad budget. We start from your real situation. One of the things we'll build in the session is exactly the smartest thing to do with what you have, including completely free options.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>I'm not tech-savvy. Will I understand everything?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          The session isn't about technology. It's about your business. Strategy, numbers, direction. The technical tools come later. The session content is understandable by anyone, no tech background needed.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>I'm just starting out. Is it too early?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Actually, no. Starting with the right strategy saves you months of mistakes. Many of our clients came in at the very beginning and built a stable business faster because they started the right way. Waiting "until things are more established" usually just wastes valuable time.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>Does this work in my area? I'm not in a major city.</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          The session is on Zoom. It doesn't matter where you live. What does matter: the strategy we build will specifically account for your audience and your area. You won't get a big-city template if you're in a regional town.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>Why do I need a session if there's a course? What's the difference?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          A course gives knowledge. A session gives a plan. The knowledge in the course is general. The plan in the session is built specifically for your business. It's the difference between "learning how to drive" and "someone sitting next to you telling you where to go."
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>I don't have time. How long does it take?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          One hour. No more. A short questionnaire beforehand (10 minutes) and then the session itself. If you can't find one hour to invest in your business, the problem is something else entirely. Most of our clients said exactly the same thing before they came.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>I've tried consultants before. It didn't help. Why would this be different?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Fair question. The key difference: we work exclusively with beauty businesses. We don't give generic business advice. Everything we discuss comes from direct experience with cosmeticians and nail techs. Whoever advised you before probably didn't know the industry specifically.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>What happens after the session? Is there ongoing support?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          You have the digital course that stays with you. Beyond that, if you'd like to continue with ongoing support there are options, but there's no obligation and no pressure to purchase anything else. The session stands on its own.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>A$180 is a lot of money for me right now.</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          You can split it into up to 10 interest-free payments. That's A$18 a month. One new client who comes in thanks to the strategy we build together pays back the investment many times over. The question isn't whether A$180 is a lot. The question is how much every month without a system is costing you.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="wstFaq(this)">
+          <span>What if I don't get anything out of the session?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          There's a full money-back guarantee. If you leave without a clear plan and without steps for the coming week, we refund your money. No questions asked. The only condition: full participation and completing the questionnaire beforehand.
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== URGENCY ===== -->
+<section class="urgency-sec">
+  <div class="wrap tc">
+    <span class="sec-label">&#9888;&#65039; Before you close this page</span>
+    <h2 style="margin-bottom:20px;">Every month without a system <span class="txt-pink">costs you more than A$180</span></h2>
+    <p style="font-size:.93rem;color:var(--t2);line-height:1.9;max-width:560px;margin:0 auto 16px;">
+      If you're losing 10 clients a month at an average price of A$100, that's A$1,000 disappearing. Not because you're not good at what you do. Because there's no system bringing them to you.
+    </p>
+    <p style="font-size:.93rem;color:var(--t2);line-height:1.9;max-width:560px;margin:0 auto 16px;">
+      The session costs less than one day of work. Waiting costs more.
+    </p>
+    <div class="urgency-box">
+      <p style="font-size:.93rem;color:var(--t2);line-height:1.9;margin:0;">
+        Right now you're at a rare point: you answered the questions, discovered what's missing, and you're still here. Tomorrow morning? Back to the routine, the appointments, the diary. The "I'll come back to this" turns into "I forgot."<br>
+        <strong style="color:var(--pink);">The moment you're most ready to move is right now.</strong>
+      </p>
+    </div>
+    <div class="countdown-wrap wst-cd" style="margin-top:28px;"></div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-sec">
+  <div class="wrap tc">
+    <span class="sec-label">Next step</span>
+    <h2>
+      One hour can change<br>
+      <em style="color:var(--gold);font-style:italic;">the direction of your business</em>
+    </h2>
+    <p>Not motivation. Not general tips. A strategy that cracks how to bring clients to your business.</p>
+
+    <a href="https://pay.grow.link/5eecd548df3ba88dba08782d599a6a8e-MzE2Nzc0Mg" class="btn btn-lg" target="_blank">
+      I want a plan for my business
+    </a>
+    <span class="btn-sub">&#128274; Secure payment. Instant booking after purchase.</span>
+
+    <div class="trust-bullets">
+      <div class="trust-bullet"><span>&#9989;</span><span>Full money-back guarantee</span></div>
+      <div class="trust-bullet"><span>&#127381;</span><span>Digital course included</span></div>
+      <div class="trust-bullet"><span>&#128250;</span><span>Recording kept forever</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STICKY MOBILE ===== -->
+<div class="sticky">
+  <div style="font-size:.73rem;color:var(--red);font-weight:700;margin-bottom:6px;font-family:'Outfit',sans-serif;">&#9200; A$180 until 31 May at midnight. After that, the price goes up.</div>
+  <a href="#price-anchor" class="btn" onclick="wstToPrice(event)">
+    Session details
+  </a>
+</div>
+
+<footer>
+  &copy; 2026 Nails Digital. All rights reserved.
+</footer>
+
+</body>
+</html>
